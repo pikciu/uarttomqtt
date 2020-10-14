@@ -7,16 +7,9 @@ import json
 import os.path
 import argparse
 from time import time, sleep, localtime, strftime
-from collections import OrderedDict
-from colorama import init as colorama_init
-from colorama import Fore, Back, Style
 from configparser import ConfigParser
-from unidecode import unidecode
 import paho.mqtt.client as mqtt
-import sdnotify
 import serial
-from signal import signal, SIGPIPE, SIG_DFL
-signal(SIGPIPE,SIG_DFL)
 
 if False:
     # will be caught by python 2.7 to be illegal syntax
@@ -27,40 +20,18 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--config_dir', help='set directory where config.ini is located', default=sys.path[0])
 parse_args = parser.parse_args()
 
-# Intro
-colorama_init()
-
-# Systemd Service Notifications - https://github.com/bb4242/sdnotify
-sd_notifier = sdnotify.SystemdNotifier()
-
-# Logging function
-def print_line(text, error = False, warning=False, sd_notify=False, console=True):
-    timestamp = strftime('%Y-%m-%d %H:%M:%S', localtime())
-    if console:
-        if error:
-            print(Fore.RED + Style.BRIGHT + '[{}] '.format(timestamp) + Style.RESET_ALL + '{}'.format(text) + Style.RESET_ALL, file=sys.stderr)
-        elif warning:
-            print(Fore.YELLOW + '[{}] '.format(timestamp) + Style.RESET_ALL + '{}'.format(text) + Style.RESET_ALL)
-        else:
-            print(Fore.GREEN + '[{}] '.format(timestamp) + Style.RESET_ALL + '{}'.format(text) + Style.RESET_ALL)
-    timestamp_sd = strftime('%b %d %H:%M:%S', localtime())
-    if sd_notify:
-        sd_notifier.notify('STATUS={} - {}.'.format(timestamp_sd, unidecode(text)))
-
 
 # Eclipse Paho callbacks - http://www.eclipse.org/paho/clients/python/docs/#callbacks
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        print_line('MQTT connection established', console=True, sd_notify=True)
-        print()
+        print('MQTT connection established')
     else:
-        print_line('Connection error with result code {} - {}'.format(str(rc), mqtt.connack_string(rc)), error=True)
+        print('Connection error with result code {} - {}'.format(str(rc), mqtt.connack_string(rc)))
         #kill main thread
         os._exit(1)
 
 
 def on_publish(client, userdata, mid):
-    #print_line('Data successfully published.')
     pass
 
 def on_message(client, userdata, message):
@@ -70,7 +41,7 @@ def on_message(client, userdata, message):
 		device_id_l = match.group(1)
 		code_l = match.group(2)
 		command = 'AT+WRTDEVOPTION={},{},0,{}\r\n'.format(device_id_l, code_l, value)
-		print_line('Sending command {}'.format(command), error=False, sd_notify=True)
+		print('Sending command {}'.format(command))
 		uart.write(command.encode())
 
 # Load configuration file
@@ -82,15 +53,13 @@ try:
     with open(os.path.join(config_dir, 'config.ini')) as config_file:
         config.read_file(config_file)
 except IOError:
-    print_line('No configuration file "config.ini"', error=True, sd_notify=True)
+    print('No configuration file "config.ini"')
     sys.exit(1)
 
 base_topic = config['MQTT'].get('base_topic', '').lower()
 
-print_line('Configuration accepted', console=False, sd_notify=True)
-
 # MQTT connection
-print_line('Connecting to MQTT broker ...')
+print('Connecting to MQTT broker ...')
 mqtt_client = mqtt.Client()
 mqtt_client.on_connect = on_connect
 mqtt_client.on_publish = on_publish
@@ -117,7 +86,7 @@ try:
                         port=int(os.environ.get('MQTT_PORT', config['MQTT'].get('port', '1883'))),
                         keepalive=config['MQTT'].getint('keepalive', 60))
 except:
-    print_line('MQTT connection error. Please check your settings in the configuration file "config.ini"', error=True, sd_notify=True)
+    print('MQTT connection error. Please check your settings in the configuration file "config.ini"')
     sys.exit(1)
 else:
 	mqtt_client.loop_start()
@@ -133,14 +102,14 @@ uart = serial.Serial(
 while not uart.isOpen():
 	pass
 
-sd_notifier.notify('READY=1')
-
 device_id=None
 code=None
 
+print('Ready')
+
 while True:
 	line = uart.readline().decode('utf-8')
-    print_line(line)
+    print(line)
 	match = re.search('^ID: (\d+)', line)
 	if match:
 		device_id = match.group(1)
@@ -155,7 +124,7 @@ while True:
 	if match:
 		value = match.group(1)
 		topic = '{}/{}/{}/state'.format(base_topic, device_id, code)
-		print_line('Publish topic: {} value: {}'.format(topic, value), sd_notify=True)
+		print('Publish topic: {} value: {}'.format(topic, value))
 		mqtt_client.publish(topic, value)
 
 

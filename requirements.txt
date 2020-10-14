@@ -1,5 +1,2 @@
 paho-mqtt==1.5.1
-colorama==0.4.4
-Unidecode==1.1.1
-sdnotify==0.3.2
 pyserial==3.4
