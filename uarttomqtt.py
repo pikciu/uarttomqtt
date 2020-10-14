@@ -35,14 +35,14 @@ def on_publish(client, userdata, mid):
     pass
 
 def on_message(client, userdata, message):
-	value = message.payload.decode('utf-8')
-	match = re.search('{}/(\d+)/(\d+)/command'.format(base_topic), message.topic)
-	if match:
-		device_id_l = match.group(1)
-		code_l = match.group(2)
-		command = 'AT+WRTDEVOPTION={},{},0,{}\r\n'.format(device_id_l, code_l, value)
-		print('Sending command {}'.format(command))
-		uart.write(command.encode())
+    value = message.payload.decode('utf-8')
+    match = re.search('{}/(\d+)/(\d+)/command'.format(base_topic), message.topic)
+    if match:
+        device_id_l = match.group(1)
+        code_l = match.group(2)
+        command = 'AT+WRTDEVOPTION={},{},0,{}\r\n'.format(device_id_l, code_l, value)
+        print('Sending command {}'.format(command))
+        uart.write(command.encode())
 
 # Load configuration file
 config_dir = parse_args.config_dir
@@ -89,18 +89,18 @@ except:
     print('MQTT connection error. Please check your settings in the configuration file "config.ini"')
     sys.exit(1)
 else:
-	mqtt_client.loop_start()
-	sleep(1.0) # some slack to establish the connection
+    mqtt_client.loop_start()
+    sleep(1.0) # some slack to establish the connection
 
 mqtt_client.subscribe('{}/+/+/command'.format(base_topic))
 
 uart = serial.Serial(
-	port=config['UART'].get('port'),
-	baudrate=config['UART'].getint('baudrate', 115200)
+    port=config['UART'].get('port'),
+    baudrate=config['UART'].getint('baudrate', 115200)
 )
 
 while not uart.isOpen():
-	pass
+    pass
 
 device_id=None
 code=None
@@ -108,23 +108,24 @@ code=None
 print('Ready')
 
 while True:
-	line = uart.readline().decode('utf-8')
+    line = uart.readline().decode('utf-8')
     print(line)
-	match = re.search('^ID: (\d+)', line)
-	if match:
-		device_id = match.group(1)
-		continue
+    
+    match = re.search('^ID: (\d+)', line)
+    if match:
+        device_id = match.group(1)
+        continue
 
-	match = re.search('^CODE: (\d+)', line)
-	if match:
-		code = match.group(1)
-		continue
+    match = re.search('^CODE: (\d+)', line)
+    if match:
+        code = match.group(1)
+        continue
 
-	match = re.search('^VALUE: (\d+)', line)
-	if match:
-		value = match.group(1)
-		topic = '{}/{}/{}/state'.format(base_topic, device_id, code)
-		print('Publish topic: {} value: {}'.format(topic, value))
-		mqtt_client.publish(topic, value)
+    match = re.search('^VALUE: (\d+)', line)
+    if match:
+        value = match.group(1)
+        topic = '{}/{}/{}/state'.format(base_topic, device_id, code)
+        print('Publish topic: {} value: {}'.format(topic, value))
+        mqtt_client.publish(topic, value)
 
 
