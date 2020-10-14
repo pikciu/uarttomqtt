@@ -140,7 +140,7 @@ code=None
 
 while True:
 	line = uart.readline().decode('utf-8')
-
+    print_line(line)
 	match = re.search('^ID: (\d+)', line)
 	if match:
 		device_id = match.group(1)
@@ -155,7 +155,7 @@ while True:
 	if match:
 		value = match.group(1)
 		topic = '{}/{}/{}/state'.format(base_topic, device_id, code)
-		print_line('Publish topic: {} value: {}'.format(topic, value))
+		print_line('Publish topic: {} value: {}'.format(topic, value), sd_notify=True)
 		mqtt_client.publish(topic, value)
 
 
