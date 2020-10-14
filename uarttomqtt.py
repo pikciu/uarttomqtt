@@ -70,6 +70,7 @@ def on_message(client, userdata, message):
 		device_id_l = match.group(1)
 		code_l = match.group(2)
 		command = 'AT+WRTDEVOPTION={},{},0,{}\r\n'.format(device_id_l, code_l, value)
+		print_line('Sending command {}'.format(command), error=False, sd_notify=True)
 		uart.write(command.encode())
 
 # Load configuration file
@@ -153,6 +154,8 @@ while True:
 	match = re.search('^VALUE: (\d+)', line)
 	if match:
 		value = match.group(1)
-		mqtt_client.publish('{}/{}/{}/state'.format(base_topic, device_id, code), value)
+		topic = '{}/{}/{}/state'.format(base_topic, device_id, code)
+		print_line('Publish topic: {} value: {}'.format(topic, value))
+		mqtt_client.publish(topic, value)
 
 
