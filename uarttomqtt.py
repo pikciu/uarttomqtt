@@ -109,7 +109,6 @@ print('Ready')
 
 while True:
     line = uart.readline().decode('utf-8')
-    print(line)
     
     match = re.search('^ID: (\d+)', line)
     if match:
