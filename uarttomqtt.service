@@ -1,0 +1,18 @@
+[Unit]
+Description=AT UART Command MQTT Client/Daemon
+Documentation=https://github.com/pikciu/uarttomqtt
+After=network.target bluetooth.service mosquitto.service
+
+[Service]
+Type=notify
+User=daemon
+Group=daemon
+WorkingDirectory=/opt/uarttomqtt/
+ExecStart=/usr/bin/python3 /opt/uarttomqtt/uarttomqtt.py
+StandardOutput=null
+StandardError=journal
+Environment=PYTHONUNBUFFERED=true
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
