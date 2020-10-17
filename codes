@@ -1,0 +1,72 @@
+RFP_PARAMETER_CODE_SWITCH_ON_OFF = 0x0001, /**< Switch */
+RFP_PARAMETER_CODE_BUTTON_PRESS = 0x0002, /**< Button press */
+RFP_PARAMETER_CODE_DIMMER_LEVEL = 0x0003, /**< Dimmer level */
+RFP_PARAMETER_CODE_RGB_COLOR = 0x0004, /**< RGB color */
+RFP_PARAMETER_CODE_DIMMER_SETUP = 0x0005, /**< Dimmer setup */
+RFP_PARAMETER_CODE_DIMMER_STATE = 0x0006, /**< Dimmer state */
+RFP_PARAMETER_CODE_BUTTON_EVENT = 0x0007, /**< Button event */
+RFP_PARAMETER_CODE_LOCK_EXTENDED = 0x0008, /**< Lock extended */
+RFP_PARAMETER_CODE_RELAY_SETUP = 0x0009, /**< Relay setup */
+RFP_PARAMETER_CODE_SOCKET_SETUP = 0x000A, /**< Socket setup */
+RFP_PARAMETER_CODE_BULB_SETUP = 0x000B, /**< Bulb setup */
+
+RFP_PARAMETER_CODE_UI_BUTTON = 0x0010, /**< UIEvent Single Button */
+RFP_PARAMETER_CODE_UI_BUTTON_PAIR = 0x0011, /**< UIEvent Pair Button */
+RFP_PARAMETER_CODE_UI_ROTARY = 0x0012, /**< UIEvent Rotary */
+RFP_PARAMETER_CODE_UI_KEYPAD = 0x0013, /**< UIEvent Keypad */
+
+RFP_PARAMETER_CODE_ROOM_TEMPERATURE_READING = 0x0020, /**< Room temperature reading */
+RFP_PARAMETER_CODE_ROOM_TEMPERATURE_SETTING = 0x0021, /**< Room temperature setting */
+RFP_PARAMETER_CODE_HEAT_STATE = 0x0022, /**< Heat state of operation */
+RFP_PARAMETER_CODE_ROOM_TEMPERATURE_OVERRIDE = 0x0023, /**< Room temperature override */
+RFP_PARAMETER_CODE_CALL_FOR_HEAT = 0x0024, /**< Call for heat */
+
+RFP_PARAMETER_CODE_3WAY_RELAY = 0x0040, /**< 3way relay, open/stop/close */
+RFP_PARAMETER_CODE_VALVE_LEVEL = 0x0041, /**< Valve level */
+RFP_PARAMETER_CODE_OUTPUT_STATE = 0x0042, /**< Output state */
+RFP_PARAMETER_CODE_FLOOD_VALVE_LEVEL = 0x0043, /**< Flood valve leve */
+RFP_PARAMETER_CODE_VALVE_SETUP = 0x0044, /**< Valve setup */
+
+RFP_PARAMETER_CODE_WINDOW_POSITION = 0x0060, /**< Position of window sensor */
+RFP_PARAMETER_CODE_MOVEMENT_SENSOR = 0x0061, /**< Movement sensor */
+RFP_PARAMETER_CODE_HUMIDTY_READING = 0x0062, /**< Humidity level reading */
+RFP_PARAMETER_CODE_LIGHT_LEVEL_READING = 0x0063, /**< Light level reading */
+RFP_PARAMETER_CODE_OUTLET_IN_USE = 0x0064, /**< Outlet in use */
+RFP_PARAMETER_CODE_SWITCHING_CYCLE_COUNTER = 0x0065, /**< Switching cycle counter */
+RFP_PARAMETER_CODE_FLOOD_SENSOR = 0x0066, /**< Flood detector */
+RFP_PARAMETER_CODE_PULSE_COUNTER = 0x0067, /**< Pulse counter */
+RFP_PARAMETER_CODE_PULSE_COUNTER_TOTAL = 0x0068, /**< Pulse counter total */
+RFP_PARAMETER_CODE_ROLLER_SHUTTER_CURRENT_POSITION  = 0x0069,      /**< Current roller shutter position */
+RFP_PARAMETER_CODE_ROLLER_SHUTTER_TARGET_POSITION   = 0x006A,      /**< Target roller shutter position */
+RFP_PARAMETER_CODE_ROLLER_SHUTTER_STATE_POSITION    = 0x006B,      /**< Roller shutter state position(movement up or down) */
+
+RFP_PARAMETER_CODE_ENERGY = 0x0080, /**< Energy */
+RFP_PARAMETER_CODE_POWER = 0x0081, /**< Power */
+RFP_PARAMETER_CODE_APPARENT_POWER = 0x0082, /**< Apparent power */
+RFP_PARAMETER_CODE_ACTIVE_POWER = 0x0083, /**< Active power */
+RFP_PARAMETER_CODE_REACTIVE_POWER = 0x0084, /**< Reactive power */
+RFP_PARAMETER_CODE_POWER_FACTOR = 0x0085, /**< Power factor */
+RFP_PARAMETER_CODE_VOLTAGE = 0x008A, /**< Voltage */
+RFP_PARAMETER_CODE_CURRENT = 0x008B, /**< Current */
+
+RFP_PARAMETER_CODE_IDENTIFY = 0x0100, /**< Identify */
+RFP_PARAMETER_CODE_LOCK = 0x0101, /**< Lock */
+RFP_PARAMETER_CODE_RESET = 0x0102, /**< Reset */
+RFP_PARAMETER_CODE_ERROR = 0x0103, /**< Error */
+
+RFP_PARAMETER_CODE_TIME_OF_INSENSITIVITY = 0x0200, /**< System parameter - time of device insensitivity for RF communication */
+RFP_PARAMETER_CODE_LISTEN_AFTER_TRANSMIT_TIME = 0x0201, /**< System parameter - time of staying in receive after transmit */
+RFP_PARAMETER_CODE_FRAME_PERIOD_SHIFT = 0x0202, /**< System parameter - transmit frame is X from period */
+
+RFP_PARAMETER_CODE_BATTERY_LEVEL_READING = 0x0300, /**< Battery level */
+RFP_PARAMETER_CODE_RSSI_INCOMING = 0x0301, /**< RSSI incoming */
+RFP_PARAMETER_CODE_RSSI_OUTGOING = 0x0302, /**< RSSI outgoing */
+RFP_PARAMETER_CODE_CURRENT_TIME = 0x0303, /**< Current unix time */
+RFP_PARAMETER_CODE_OTA = 0x0304, /**< OTA payload */
+RFP_PARAMETER_CODE_UPTIME = 0x0305, /**< Operating hours */
+RFP_PARAMETER_CODE_DIAGNOSTICS                      = 0x0306, /**< Diagnostics */
+RFP_PARAMETER_CODE_PERIOD_OF_BROADCAST              = 0x0307, /**< Period of broadcast */
+RFP_PARAMETER_CODE_POWER_SOURCE             = 0x0308, /**< Power source */
+RFP_PARAMETER_CODE_NUMBER_OF_LINKED_DEVICES     = 0x0309, /**< Number of linked devices */
+
+RFP_PARAMETER_CODE_LAST = 0x03FF
