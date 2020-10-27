@@ -36,11 +36,12 @@ def on_publish(client, userdata, mid):
 
 def on_message(client, userdata, message):
     value = message.payload.decode('utf-8')
-    match = re.search('{}/(\d+)/(\d+)/command'.format(base_topic), message.topic)
+    match = re.search('{}/(\d+)/(\d+)/(\d+)/command'.format(base_topic), message.topic)
     if match:
         device_id_l = match.group(1)
         code_l = match.group(2)
-        command = 'AT+WRTDEVOPTION={},{},0,{}\r\n'.format(device_id_l, code_l, value)
+        channel_l = match.group(3)
+        command = 'AT+WRTDEVOPTION={},{},{},{}\r\n'.format(device_id_l, code_l, channel_l, value)
         print('Sending command {}'.format(command))
         uart.write(command.encode())
 
@@ -92,7 +93,7 @@ else:
     mqtt_client.loop_start()
     sleep(1.0) # some slack to establish the connection
 
-mqtt_client.subscribe('{}/+/+/command'.format(base_topic))
+mqtt_client.subscribe('{}/+/+/+/command'.format(base_topic))
 
 uart = serial.Serial(
     port=config['UART'].get('port'),
@@ -104,6 +105,7 @@ while not uart.isOpen():
 
 device_id=None
 code=None
+channel=None
 
 print('Ready')
 
@@ -120,10 +122,15 @@ while True:
         code = match.group(1)
         continue
 
+    match = re.search('^CHANNEL: (\d+)', line)
+    if match:
+        channel = match.group(1)
+        continue
+
     match = re.search('^VALUE: (\d+)', line)
     if match:
         value = match.group(1)
-        topic = '{}/{}/{}/state'.format(base_topic, device_id, code)
+        topic = '{}/{}/{}/{}/state'.format(base_topic, device_id, code, channel)
         print('Publish topic: {} value: {}'.format(topic, value))
         mqtt_client.publish(topic, value)
 

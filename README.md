@@ -4,17 +4,18 @@ Jest to proxy/most pomiędzy interfejsem UART i komendami AT a protokołem MQTT.
 ## Warunki wstępne
 - urządzenia muszą być sprarowane i dodane do sieci - [AT_cmd_set.pdf](AT_cmd_set.pdf)
 - należy znać identyfikatory urządzeń
-- należy znać kody parametrów które mamy zamiar odczytywać i/lub te które mamy zamiar ustawiać - [codes](codes)
+- należy znać kody parametrów i kanały, które mamy zamiar odczytywać i/lub te które mamy zamiar ustawiać - [codes](codes)
 
 ## Topic MQTT
 Topic jest budowany według schematu
 ```
-PREFIX/ID/CODE/POSTFIX
+PREFIX/ID/CODE/CHANNEL/POSTFIX
 ```
 gdzie
 - `PREFIX` - stały prefix ustawiany w pliku [config.ini](config.ini)
 - `ID` - id urządzenia
 - `CODE` - parametr urządzenia np. temperatura
+- `CHANNEL` - kanał parametru
 - `POSTFIX` - typ tematu, określa czy jest to input do urządzenia lub output z urządzenia. Możliwe wartości:
 	- `state` - stan wysyłany przez urządzenie
 	- `command` - wartość wysyłana do urządzenia
@@ -22,14 +23,14 @@ gdzie
 ### Odczyt wartości parametru - `state`
 Odczytywanie wartości parametru, polega na zasubskrybowaniu na odpowiedni topic. Dla przykładu aby odczytać temperaturę z urządzenia o `ID = 2` należy zasubskrybować się na topic 
 ```
-uart/2/32/state
+uart/2/32/0/state
 ```
 W wiadomośći MQTT otrzymamy odczytaną wartość, np. `225` co oznacza temperaturę `22.5°C`
 
 ### Ustawianie wartości parametry - `command`
 Należy wysłać wiadomość MQTT z nową wartością parametru na odpowiedni topic. Dla przykładu aby ustawić roletę w pozycji 50% otwarcia należy wysłać wartość `50` na topic
 ```
-uart/1/106/command
+uart/1/106/0/command
 ```
 
 ## Instalacja i uruchomienie
@@ -71,11 +72,11 @@ Bridge mqtt:broker:broker [host="raspberrypi", secure=false] {
     Thing topic uart {
         Channels:
             Type number:temperature     "Temperature"       [
-                stateTopic="uart/2/32/state"
+                stateTopic="uart/2/32/0/state"
             ]
             Type dimmer:rollershutter    "Rollershutter"    [
-                stateTopic="uart/1/106/state",
-                commandTopic="uart/1/106/command"
+                stateTopic="uart/1/106/0/state",
+                commandTopic="uart/1/106/0/command"
             ]
     }
 }
