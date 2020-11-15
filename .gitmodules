@@ -1,0 +1,3 @@
+[submodule "Aura_Chip"]
+	path = Aura_Chip
+	url = https://github.com/Auraton/Aura_Chip

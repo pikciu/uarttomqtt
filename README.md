@@ -2,7 +2,7 @@
 Jest to proxy/most pomiędzy interfejsem UART i komendami AT a protokołem MQTT. Pozwala na komunikację z urządzeniami za pomocą MQTT, dzięki czemu integracja z systemami automatyki domowej tj. openHAB czy HomeAssistant jest bardzo prosta.
 
 ## Warunki wstępne
-- urządzenia muszą być sprarowane i dodane do sieci - [AT_cmd_set.pdf](AT_cmd_set.pdf)
+- urządzenia muszą być sprarowane i dodane do sieci - [AuraChip-datasheet.pdf](https://github.com/Auraton/Aura_Chip/blob/bc275477b86c6fc199bf09b975b22ececfa800f9/Datasheets/AuraChip-datasheet.pdf)
 - należy znać identyfikatory urządzeń
 - należy znać kody parametrów i kanały, które mamy zamiar odczytywać i/lub te które mamy zamiar ustawiać - [codes](codes)
 
