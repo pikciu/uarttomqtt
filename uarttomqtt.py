@@ -24,7 +24,7 @@ parse_args = parser.parse_args()
 # Eclipse Paho callbacks - http://www.eclipse.org/paho/clients/python/docs/#callbacks
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        print('MQTT connection established')
+        print('MQTT connection established', flush=True)
     else:
         print('Connection error with result code {} - {}'.format(str(rc), mqtt.connack_string(rc)))
         #kill main thread
@@ -42,7 +42,7 @@ def on_message(client, userdata, message):
         code_l = match.group(2)
         channel_l = match.group(3)
         command = 'AT+WRTDEVOPTION={},{},{},{}\r\n'.format(device_id_l, code_l, channel_l, value)
-        print('Sending command {}'.format(command))
+        print('Sending command {}'.format(command), flush=True)
         uart.write(command.encode())
 
 # Load configuration file
@@ -54,13 +54,13 @@ try:
     with open(os.path.join(config_dir, 'config.ini')) as config_file:
         config.read_file(config_file)
 except IOError:
-    print('No configuration file "config.ini"')
+    print('No configuration file "config.ini"', flush=True)
     sys.exit(1)
 
 base_topic = config['MQTT'].get('base_topic', '').lower()
 
 # MQTT connection
-print('Connecting to MQTT broker ...')
+print('Connecting to MQTT broker ...', flush=True)
 mqtt_client = mqtt.Client()
 mqtt_client.on_connect = on_connect
 mqtt_client.on_publish = on_publish
@@ -87,7 +87,7 @@ try:
                         port=int(os.environ.get('MQTT_PORT', config['MQTT'].get('port', '1883'))),
                         keepalive=config['MQTT'].getint('keepalive', 60))
 except:
-    print('MQTT connection error. Please check your settings in the configuration file "config.ini"')
+    print('MQTT connection error. Please check your settings in the configuration file "config.ini"', flush=True)
     sys.exit(1)
 else:
     mqtt_client.loop_start()
@@ -107,7 +107,7 @@ device_id=None
 code=None
 channel=None
 
-print('Ready')
+print('Ready', flush=True)
 
 while True:
     line = uart.readline().decode('utf-8')
@@ -131,7 +131,7 @@ while True:
     if match:
         value = match.group(1)
         topic = '{}/{}/{}/{}/state'.format(base_topic, device_id, code, channel)
-        print('Publish topic: {} value: {}'.format(topic, value))
+        print('Publish topic: {} value: {}'.format(topic, value), flush=True)
         mqtt_client.publish(topic, value)
 
 

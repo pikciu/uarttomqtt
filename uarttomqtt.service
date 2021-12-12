@@ -5,7 +5,7 @@ After=network.target mosquitto.service multi-user.target
 
 [Service]
 Type=idle
-User=pi
+User=openhab
 WorkingDirectory=/opt/uarttomqtt/
 ExecStart=/usr/bin/python3 /opt/uarttomqtt/uarttomqtt.py
 Restart=always
